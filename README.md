@@ -1,8 +1,5 @@
 # テーブル設計
 
-null: false
-unique: true
-
 ## users テーブル
 
 | Column             | Type   | Options      |
