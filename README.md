@@ -19,23 +19,23 @@
 
 ## Items テーブル
 
-| Column             | Type       | Options                      |
-| ------------------ | ---------- | -----------------------------|
-| user               | references | not null, foreign_key: true  |
-| title              | string     | null: false                  | 
-| explan             | text       | null: false                  | 
-| category_id        | integer    | null: false                  |
-| condition_id       | integer    | null: false                  |
-| shipping_cost_id   | integer    | null: false                  |
-| send_region_id     | integer    | null: false                  |
-| delivery_date_id   | integer    | null: false                  |
-| cost               | integer    | null: false                  |
+| Column             | Type       | Options                         |
+| ------------------ | ---------- | --------------------------------|
+| user               | references | null: false, foreign_key: true  |
+| title              | string     | null: false                     | 
+| explan             | text       | null: false                     | 
+| category_id        | integer    | null: false                     |
+| condition_id       | integer    | null: false                     |
+| shipping_cost_id   | integer    | null: false                     |
+| region_id          | integer    | null: false                     |
+| delivery_date_id   | integer    | null: false                     |
+| cost               | integer    | null: false                     |
 
 ### Association
 - belongs_to :user
-- has_many :orders
+- has_one :orders
 
-## Oders テーブル
+## Orders テーブル
 
 | Column             | Type       | Options                      |
 | ------------------ | ---------- | ---------------------------- |
@@ -51,9 +51,9 @@
 ## Sellers テーブル
 | Column             | Type       | Options                      |
 | ------------------ | ---------- | ---------------------------- |
-| oder_id            | references | not null, foreign_key: true  |
+| order_id           | references | not null, foreign_key: true  |
 | zip_code           | string     | null: false                  |
-| receive_region_id  | integer    | null: false                  |
+| region_id          | integer    | null: false                  |
 | city               | string     | null: false                  |
 | address            | string     | null: false                  |
 | another            | string     |                              |
