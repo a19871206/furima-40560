@@ -33,9 +33,9 @@
 
 ### Association
 - belongs_to :user
-- has_one :orders
+- has_one :order
 
-## Orders テーブル
+## Order テーブル
 
 | Column             | Type       | Options                      |
 | ------------------ | ---------- | ---------------------------- |
@@ -48,10 +48,10 @@
 - has_one :seller
 
 
-## Sellers テーブル
+## Seller テーブル
 | Column             | Type       | Options                      |
 | ------------------ | ---------- | ---------------------------- |
-| order_id           | references | not null, foreign_key: true  |
+| order              | references | not null, foreign_key: true  |
 | zip_code           | string     | null: false                  |
 | region_id          | integer    | null: false                  |
 | city               | string     | null: false                  |
