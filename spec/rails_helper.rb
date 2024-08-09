@@ -8,7 +8,6 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 RSpec.configure do |config|
-  
 end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
