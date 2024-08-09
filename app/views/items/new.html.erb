@@ -86,36 +86,65 @@
     </div>
     <%# /配送について %>
 
-    <%# 販売価格 %>
-    <div class="sell-price">
-      <div class="weight-bold-text question-text">
-        <span>販売価格<br>(¥300〜9,999,999)</span>
-        <a class="question" href="#">?</a>
+<%# 販売価格 %>
+<div class="sell-price">
+  <div class="weight-bold-text question-text">
+    <span>販売価格<br>(¥300〜9,999,999)</span>
+    <a class="question" href="#">?</a>
+  </div>
+  <div>
+    <div class="price-content">
+      <div class="price-text">
+        <span>価格</span>
+        <span class="indispensable">必須</span>
       </div>
-      <div>
-        <div class="price-content">
-          <div class="price-text">
-            <span>価格</span>
-            <span class="indispensable">必須</span>
-          </div>
-          <span class="sell-yen">¥</span>
-          <%= f.text_field :hoge, class:"price-input", id:"item-price", placeholder:"例）300" %>
-        </div>
-        <div class="price-content">
-          <span>販売手数料 (10%)</span>
-          <span>
-            <span id='add-tax-price'></span>円
-          </span>
-        </div>
-        <div class="price-content">
-          <span>販売利益</span>
-          <span>
-            <span id='profit'></span>円
-          </span>
-        </div>
-      </div>
+      <span class="sell-yen">¥</span>
+      <%= f.text_field :price, class:"price-input", id:"item-price", placeholder:"例）300", required: true %>
     </div>
-    <%# /販売価格 %>
+    <div class="price-content">
+      <span>販売手数料 (10%)</span>
+      <span>
+        <span id='add-tax-price'>0</span>円
+      </span>
+    </div>
+    <div class="price-content">
+      <span>販売利益</span>
+      <span>
+        <span id='profit'>0</span>円
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const priceInput = document.getElementById('item-price');
+    const taxPriceDisplay = document.getElementById('add-tax-price');
+    const profitDisplay = document.getElementById('profit');
+
+    priceInput.addEventListener('input', function() {
+      const price = parseInt(priceInput.value, 10);
+      
+      // 価格のバリデーション
+      if (isNaN(price) || price < 300 || price > 9999999) {
+        taxPriceDisplay.textContent = '0';
+        profitDisplay.textContent = '0';
+        return;
+      }
+
+      // 販売手数料 (10%)
+      const tax = Math.floor(price * 0.1);
+      taxPriceDisplay.textContent = tax;
+
+      // 販売利益
+      const profit = price - tax;
+      profitDisplay.textContent = profit;
+    });
+  });
+</script>
+
+<%# /販売価格 %>
+
 
     <%# 注意書き %>
     <div class="caution">
