@@ -8,7 +8,7 @@
     <%= form_with model: @item, local: true do |f| %>
 
     <%# インスタンスを渡して、エラー発生時にメッセージが表示されるようにしましょう。%>
-    <%# render 'shared/error_messages', model: f.object %>
+    <%= render 'shared/error_messages', model: f.object %>
     <%# //インスタンスを渡して、エラー発生時にメッセージが表示されるようにしましょう。%>
 
     <%# 商品画像 %>
@@ -99,49 +99,22 @@
         <span class="indispensable">必須</span>
       </div>
       <span class="sell-yen">¥</span>
-      <%= f.text_field :cost, class:"price-input", id:"item-price", placeholder:"例）300", required: true %>
+      <%= f.text_field :cost, class:"price-input", id:"item-price", placeholder:"例）300" %>
     </div>
     <div class="price-content">
       <span>販売手数料 (10%)</span>
       <span>
-        <span id='add-tax-price'>0</span>円
+        <span id='add-tax-price'></span>円
       </span>
     </div>
     <div class="price-content">
       <span>販売利益</span>
       <span>
-        <span id='profit'>0</span>円
+        <span id='profit'></span>円
       </span>
     </div>
   </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const priceInput = document.getElementById('item-price');
-    const taxPriceDisplay = document.getElementById('add-tax-price');
-    const profitDisplay = document.getElementById('profit');
-
-    priceInput.addEventListener('input', function() {
-      const price = parseInt(priceInput.value, 10);
-      
-      // 価格のバリデーション
-      if (isNaN(price) || price < 300 || price > 9999999) {
-        taxPriceDisplay.textContent = '0';
-        profitDisplay.textContent = '0';
-        return;
-      }
-
-      // 販売手数料 (10%)
-      const tax = Math.floor(price * 0.1);
-      taxPriceDisplay.textContent = tax;
-
-      // 販売利益
-      const profit = price - tax;
-      profitDisplay.textContent = profit;
-    });
-  });
-</script>
 
 <%# /販売価格 %>
 
