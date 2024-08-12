@@ -13,12 +13,12 @@ RSpec.describe User, type: :model do
     end
 
     context '無効な場合' do
-      
       it 'nick_nameが空では登録できない' do
         @user.nick_name = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include "Nick name can't be blank"
+      expect(@user.errors.full_messages).to include "Nick name can't be blank"
       end
+
       
       it 'passwordが不正な形式では登録できない' do
         @user.password = 'abcde' # 英字のみ
@@ -94,7 +94,7 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include "Birth date can't be blank"
       end
 
-#デバイスを導入したらオリジナルで下記を追記して確認をすること
+      # デバイスを導入したらオリジナルで下記を追記して確認をすること
 
       it 'passwordが5文字以下では登録できない' do
         @user.password = '12345'
@@ -103,8 +103,8 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
       end
       it 'passwordが129文字以上では登録できない' do
-        @user.password =  Faker::Internet.password(min_length: 129, max_length: 150)
-        @user.password_confirmation =  @user.password
+        @user.password = Faker::Internet.password(min_length: 129, max_length: 150)
+        @user.password_confirmation = @user.password
         @user.valid?
         expect(@user.errors.full_messages).to include('Password is too long (maximum is 128 characters)')
       end
