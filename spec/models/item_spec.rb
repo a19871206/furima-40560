@@ -6,10 +6,12 @@ RSpec.describe Item, type: :model do
   end
 
  describe 'バリデーション' do
-    it '有効なアイテム' do
+  context '正常系でできること' do  
+  it '有効なアイテム' do
       expect(@item).to be_valid
     end
-
+  end
+  context '異常系でのテスト' do
     it '画像がない場合無効' do
       @item.image = nil
       expect(@item).to be_invalid
@@ -58,10 +60,39 @@ RSpec.describe Item, type: :model do
       expect(@item.errors.full_messages).to include("Delivery date must be other than 1")
     end
 
-    it 'コストが0以下の場合無効' do
-      @item.cost = 0
-      expect(@item).to be_invalid
-      expect(@item.errors.full_messages).to include("Cost must be greater than 0")
+   #testcode追加 
+    it 'コストが300未満の場合無効' do
+        @item.cost = 250
+        expect(@item).to be_invalid
+        expect(@item.errors.full_messages).to include("Cost 価格は¥300から¥9,999,999の間で入力してください")
+      end
+    
+      it 'コストが9999999を超える場合無効' do
+        @item.cost = 10000000
+        expect(@item).to be_invalid
+        expect(@item.errors.full_messages).to include("Cost must be less than or equal to 9999999")
+      end
+    
+      it 'コストが空では登録できない' do
+        @item.cost = ''
+        expect(@item).to be_invalid
+        expect(@item.errors.full_messages).to include("Cost can't be blank")
+      end
+
+      it '価格は半角数値であること' do
+        @item.cost = 'abc'  # 半角数値以外の文字列
+        expect(@item).to be_invalid
+        expect(@item.errors.full_messages).to include("Cost is not a number")
+      
+        @item.cost = 300  # 有効な半角数値
+        expect(@item).to be_valid
+      end
+
+      it 'ユーザーが紐づいていない場合無効' do
+        @item.user = nil
+        expect(@item).to be_invalid
+        expect(@item.errors.full_messages).to include("User must exist")
+      end
     end
   end
 end
