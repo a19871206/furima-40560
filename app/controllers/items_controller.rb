@@ -1,6 +1,8 @@
 class ItemsController < ApplicationController
   before_action :basic_auth, only: [:index]
-  before_action :authenticate_user!, only: [:new, :create,]
+  before_action :authenticate_user!, only: [:new, :create, :edit,]
+  before_action :set_item, only: [:show, :edit, :update]
+
 
   def index
     @items = Item.order(created_at: :desc) 
@@ -13,22 +15,38 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
-    @item.user_id = current_user.id # ユーザーIDを設定
 
     if @item.save
-     redirect_to root_path, notice: '商品が作成されました。'
+     redirect_to root_path
    else
      render :new, status: :unprocessable_entity
    end
   end
 
    def show
-    @item = Item.find(params[:id])
   end
+
+  def edit
+  end
+
+  def update
+    @item.update(item_params)
+    if @item.save
+     redirect_to item_path(@item)
+   else
+     render :edit, status: :unprocessable_entity
+   end
+  end
+
 
   private
 
   def item_params
     params.require(:item).permit(:image, :title, :explan, :category_id, :condition_id, :shipping_cost_id, :region_id, :delivery_date_id, :cost).merge(user_id: current_user.id)
   end
+
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
 end
