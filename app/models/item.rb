@@ -19,10 +19,10 @@ class Item < ApplicationRecord
   validates :cost,              presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 9999999 }
   validate :cost_within_range
   
-  def sold_out
+  #def sold_out
     # 例: sold_outカラムがtrueの場合
-    self.sold_out == true
-  end
+   # self.sold_out == true
+  #end
 
 
   private
