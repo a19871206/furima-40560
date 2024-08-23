@@ -1,3 +1,4 @@
+=======
 # テーブル設計
 
 ## users テーブル
@@ -61,3 +62,4 @@
 
 ### Association
 - belongs_to :order
+
