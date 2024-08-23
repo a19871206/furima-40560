@@ -1,20 +1,21 @@
 class OrdersController < ApplicationController
   def index
+    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @order_form = OrderForm.new
     @item = Item.find(params[:item_id]) # 購入するアイテムの取得
   end
 
   def create
     @order_form = OrderForm.new(order_params)
+    @item = Item.find(params[:item_id])
     if @order_form.valid?
       # OrderとSellerの作成処理
-      order = Order.create(user_id: current_user.id, item_id: @order_form.item_id)
-      Seller.create(order: order, zip_code: @order_form.zip_code, region_id: @order_form.region_id,
-                    city: @order_form.city, address: @order_form.address,
-                    another: @order_form.another, phone_number: @order_form.phone_number)
+      pay_item
+      @order_form.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
+      
+      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
       render :index
     end
   end
@@ -22,6 +23,19 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order_form).permit(:zip_code, :region_id, :city, :address, :another, :phone_number, :item_id).merge(user_id: current_user.id)
+    params.require(:order_form).permit(:zip_code, :region_id, :city, :address, :another, :phone_number
+    ).merge(
+    user_id: current_user.id ,
+    item_id: params[:item_id],
+    token: params[:token]
+    )
   end
+    def pay_item
+      Payjp.api_key = ENV["PAYJP_SECRET_KEY"] 
+      Payjp::Charge.create(
+        amount: @item.cost,          # 商品の値段
+        card: order_params[:token],    # カードトークン
+        currency: 'jpy'                 # 通貨の種類（日本円）
+      )
+    end
 end
