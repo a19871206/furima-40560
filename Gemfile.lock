@@ -294,6 +294,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_hash
+  activemodel
   bootsnap
   capybara
   debug
