@@ -1,8 +1,11 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @order_form = OrderForm.new
     @item = Item.find(params[:item_id]) # 購入するアイテムの取得
+    return redirect_to root_path if @item.user_id == current_user.id || @item.order.present?
   end
 
   def create
