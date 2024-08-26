@@ -25,6 +25,18 @@ RSpec.describe OrderForm, type: :model do
         expect(@order_form.errors.full_messages).to include("Token can't be blank")
       end
       
+      it 'user_idが空の場合無効' do
+        @order_form.user_id = nil
+        expect(@order_form).to be_invalid
+        expect(@order_form.errors.full_messages).to include("User can't be blank")
+      end
+
+      it 'item_idが空の場合無効' do
+        @order_form.item_id = nil
+        expect(@order_form).to be_invalid
+        expect(@order_form.errors.full_messages).to include("Item can't be blank")
+      end
+
       it '電話番号が10桁以上11桁以内ではない場合無効' do
         @order_form.phone_number = '999999999' # 9桁
         expect(@order_form).to be_invalid
@@ -35,6 +47,12 @@ RSpec.describe OrderForm, type: :model do
         @order_form.zip_code = nil
         expect(@order_form).to be_invalid
         expect(@order_form.errors.full_messages).to include("Zip code can't be blank")
+      end
+
+      it '郵便番号がハイフンなしの場合無効' do
+        @order_form.zip_code = '1234567' # ハイフンなしの郵便番号
+        expect(@order_form).to be_invalid
+        expect(@order_form.errors.full_messages).to include("Zip code 3桁ハイフン4桁")
       end
 
       it '都道府県がない場合無効' do
@@ -60,6 +78,20 @@ RSpec.describe OrderForm, type: :model do
         expect(@order_form).to be_invalid
         expect(@order_form.errors.full_messages).to include("Phone number can't be blank")
       end
+
+      it '電話番号が12桁以上の場合無効' do
+        @order_form.phone_number = '999999999999' # 12桁
+        expect(@order_form).to be_invalid
+        expect(@order_form.errors.full_messages).to include("Phone number 10桁以上11桁以内")
+      end
+
+      it '電話番号に英数字以外が含まれている場合無効' do
+        @order_form.phone_number = '12345abcde' # 英数字以外を含む
+        expect(@order_form).to be_invalid
+        expect(@order_form.errors.full_messages).to include("Phone number 10桁以上11桁以内")
+      end
+
+    
     end
   end
 end
